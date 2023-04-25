@@ -30,7 +30,13 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             binder = service as TimerService.TimerBinder
             binder?.setHandler(timerHandler)
+
+
+
+
         }
+
+
 
         override fun onServiceDisconnected(name: ComponentName?) {
             binder = null
@@ -62,12 +68,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.mymenu, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.startMenu -> {
+                binder?.start(100)
+                true
+            }
+            R.id.pauseMenu -> {
+                binder?.pause()
+                true
+            }
+            R.id.stopMenu -> {
+                binder?.stop()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
